@@ -46,19 +46,23 @@ module.exports = function solveSudoku(matrix) {
 
     }}
 
+  
+     
+    
     for (let i = 0; i < sudoku.length; i++) {
       for (let j = 0; j < sudoku[i].length; j++) {
     if (sudoku[i][j] !=0) {
-     matrix[i][j]=matrix[i][j][0]
+    
     } else { for (let k = 0; k <matrix[i][j].length; k++)
-      {       
+      {
+   // alert('удаляем в элементе i= '+i+', j ='+j+', k = '+k+'значени в ijk = '+sudoku1[i][j][k]+' lengtth = '+sudoku1[i][j].length)
+      
       if (matrix[i][j][k] <10) {}
        else { matrix[i][j].splice(k,1)
         k--
-     }
-     matrix[i][j]= matrix[i][j][0]
+        }
     }
-     
+      matrix[i][j]= matrix[i][j][0]
     }}}
 return matrix;
 }
