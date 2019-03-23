@@ -1,70 +1,69 @@
 module.exports = function solveSudoku(matrix) {
-  // your solution
-  var 
-  sudoku=[
-    [5, 3, 4, 6, 7, 8, 9, 0, 0],
-    [6, 7, 2, 1, 9, 5, 3, 4, 8],
-    [1, 9, 8, 3, 4, 2, 5, 6, 7],
-    [8, 5, 9, 7, 6, 1, 4, 2, 3],
-    [4, 2, 6, 8, 5, 3, 7, 9, 1],
-    [7, 1, 3, 9, 2, 4, 8, 5, 6],
-    [9, 6, 1, 5, 3, 7, 2, 8, 4],
-    [2, 8, 7, 4, 1, 9, 6, 3, 5],
-    [3, 4, 5, 2, 8, 6, 1, 7, 9]
-  ],
-  matrix=[
-    [[],[],[],[],[],[],[],[],[],],
-    [[],[],[],[],[],[],[],[],[],],
-    [[],[],[],[],[],[],[],[],[],],
-    [[],[],[],[],[],[],[],[],[],],
-    [[],[],[],[],[],[],[],[],[],],
-    [[],[],[],[],[],[],[],[],[],],
-    [[],[],[],[],[],[],[],[],[],],
-    [[],[],[],[],[],[],[],[],[],],
-    [[],[],[],[],[],[],[],[],[],]
-  ];
-  for (let i = 0; i < sudoku.length; i++) {
-     for (let j = 0; j < sudoku[i].length; j++) {
-   if (sudoku[i][j] !=0) {
-    matrix[i][j]=sudoku[i][j]
-   } else {matrix[i][j]=[0,1,2,3,4,5,6,7,8,9]
-     
-   }}}
- 
-   for (let i = 0; i < sudoku.length; i++) {
-    for (let j = 0; j < sudoku[i].length; j++) {
-      if (sudoku[i][j] !="") {
-       } else 
-      {
-         for (let l = 0; l < 9; l++) {
-
-      delete matrix[i][j][sudoku[i][l]];
-      
-      delete matrix[i][j][sudoku[l][j]];
-     }      
-       }
-
-    }}
-
-  
-     
-    
-    for (let i = 0; i < sudoku.length; i++) {
-      for (let j = 0; j < sudoku[i].length; j++) {
-    if (sudoku[i][j] !=0) {
-    
-    } else { for (let k = 0; k <matrix[i][j].length; k++)
-      {
-   // alert('удаляем в элементе i= '+i+', j ='+j+', k = '+k+'значени в ijk = '+sudoku1[i][j][k]+' lengtth = '+sudoku1[i][j].length)
-      
-      if (matrix[i][j][k] <10) {}
-       else { matrix[i][j].splice(k,1)
-        k--
+  function checkRow(r, c) {
+    var value = matrix[r][c];
+    for (var c1 = 0; c1 < 9; c1++) {
+        if (c1 != c && matrix[r][c1] == value) {
+            return false;
         }
     }
-      matrix[i][j]= matrix[i][j][0]
-    }}}
-return matrix;
-}
+    return true;
+};
+
+function checkColumn(r, c) {
+    var value = matrix[r][c];
+    for (var r1 = 0; r1 < 9; r1++) {
+        if (r1 != r && matrix[r1][c] == value) {
+            return false;
+        }
+    }
+    return true;
+};
+
+function checkCell(r, c) {
+    var value = matrix[r][c];
+    var r1Box = Math.floor(r / 3);
+    var c1Box = Math.floor(c / 3);
+
+    for (var r1 = r1Box * 3; r1 < r1Box * 3 + 3; r1++) {
+        for (var c1 = c1Box * 3; c1 < c1Box * 3 + 3; c1++) {
+            if (r1 != r && c1 != c && matrix[r1][c1] == value) {
+                return false;
+            }
+        }
+    }
+    return true;
+};
+
+function backtrack(r, c) {
+    c++
+    if (c > 8) {
+        c = 0;
+        r++;
+        if (r > 8) {
+            return matrix;
+        }
+    }
+
+    if (matrix[r][c] != 0) {
+        if (!(checkRow(r, c) && checkColumn(r, c) && checkCell(r, c))){
+            return false;
+        }
+        return backtrack(r, c);
+    } else {
+        for (var x = 1; x < 10; x++) {
+          matrix[r][c] = x;
+            if (checkRow(r, c) && checkColumn(r, c) && checkCell(r, c)){
+                if (backtrack(r, c)) {
+                    return matrix;
+                }
+            }
+        }
+      matrix[r][c] = 0;
+        return false;
+    }
+};
+  return backtrack(0, -1);
+};
+
 
 
